@@ -1,0 +1,73 @@
+{% extends 'base.html' %} {% load static %} {% block main %}
+<div
+	class=""
+	style="
+		background: url('https://www.arpa-hpl.ru/upload/resize_cache/iblock/c8f/1000_1000_0/c8f087681773853061781463b107593b.jpg');
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center;
+		height: 100vh;
+		width: 100%;
+	"
+>
+	<form
+		action=""
+		method="post"
+		class="w-full h-full flex items-center justify-center flex-col"
+	>
+		{% csrf_token %}
+		<div class="flex items-center justify-around w-1/2 gap-5">
+			<img
+				class="w-1/2"
+				src="{% static 'login-page/signin.png' %}"
+				alt="Sign in"
+			/>
+			<div class="w-full flex flex-col gap-2">
+				<h1 class="font-bold text-2xl text-white text-center mb-2">Login</h1>
+				<div class="flex flex-col gap-1">
+					<input
+						value="{{ form.username.value|default_if_none:'' }}"
+						class="transition focus:ring-2 focus:ring-white bg-opacity-10 placeholder:text-white px-4 py-2 font-medium text-white rounded border-2 border-white bg-white outline-none"
+						type="text"
+						name="username"
+						placeholder="E-mail"
+					/>
+					{% if form.username.errors %}
+					<p class="text-red-500 text-sm">{{ form.username.errors.as_text }}</p>
+					{% endif %}
+				</div>
+				<div class="flex flex-col gap-1">
+					<input
+						class="transition focus:ring-2 focus:ring-white bg-opacity-10 placeholder:text-white px-4 py-2 font-medium text-white rounded border-2 border-white bg-white outline-none"
+						type="password"
+						name="password"
+						placeholder="*********"
+					/>
+					{% if form.password.errors %}
+					<p class="text-red-500 text-sm">{{ form.password.errors.as_text }}</p>
+					{% endif %}
+				</div>
+				{% if form.non_field_errors %}
+				<div class="text-red-500 text-sm mb-2">
+					<p>{{ form.non_field_errors.as_text }}</p>
+				</div>
+				{% endif %}
+				<div class="flex items-center gap-2">
+					<input
+						class="w-5 h-5 outline-none focus:ring-2 focus:ring-white"
+						type="checkbox"
+						id="rememberMe"
+					/>
+					<label class="text-white" for="rememberMe">Remember me</label>
+				</div>
+				<button
+					class="transition font-medium text-white rounded mt-2 bg-gray-900 py-2 active:scale-95 focus:outline-none focus:ring-2 focus:ring-white"
+					type="submit"
+				>
+					Sign in
+				</button>
+			</div>
+		</div>
+	</form>
+</div>
+{% endblock main %}

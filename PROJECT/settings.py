@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from django.urls import reverse_lazy
+
 from environs import Env
 
 env = Env()
@@ -11,6 +13,8 @@ DEBUG = env.int("DEBUG")
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 INSTALLED_APPS = [
+    "daphne",
+    
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -19,6 +23,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "app_chat",
+    "app_users",
 ]
 
 MIDDLEWARE = [
@@ -52,6 +57,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "PROJECT.wsgi.application"
+ASGI_APPLICATION = "PROJECT.asgi.application"
 
 DATABASES = {
     "default": {
@@ -62,6 +68,15 @@ DATABASES = {
         "HOST": env.str("DB_HOST"),
         "PORT": env.int("DB_PORT"),
     }
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -97,3 +112,6 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = 'app_chat.User'
+
+LOGIN_REDIRECT_URL = reverse_lazy("home_page")
+LOGOUT_REDIRECT_URL = reverse_lazy("login")
